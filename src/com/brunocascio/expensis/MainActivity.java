@@ -89,20 +89,27 @@ public class MainActivity extends Activity implements ActionBar.OnNavigationList
     
     public void onClick(View view) {
 	    
-	    if (view.getId() == R.id.button_add){	      
-	      Expensi expensi = new Expensi(
-	    		  description.getText().toString(),
-	    		  Float.parseFloat(price.getText().toString()),
-	    		  dateFromPicker(calendar)
-	    		  );	      
-	      datasource.createExpensi(expensi);
-	      
-	      Toast.makeText(this, "Guardado: "+description.getText().toString(), Toast.LENGTH_SHORT).show();
-	      
-	      if ( (resetMonth(calendar.getMonth()) == resetMonth(Calendar.getInstance().get(Calendar.MONTH))) ){
-	    	  System.out.println("Se ejecuta UpdateAll porque concuerda el mes");
-	    	  this.updateAll();
-	      }
+	    if (view.getId() == R.id.button_add){	 
+	      if (description.getText() != null 
+	    	&& !description.getText().toString().equals("")
+	    	&& price.getText() != null 
+	    	&& !price.getText().toString().equals("")
+	    	&& !price.getText().toString().equals("."))
+	      {
+		      Expensi expensi = new Expensi(
+		    		  description.getText().toString(),
+		    		  Float.parseFloat(price.getText().toString()),
+		    		  dateFromPicker(calendar)
+		    		  );	      
+		      datasource.createExpensi(expensi);
+		      
+		      Toast.makeText(this, "Guardado: "+description.getText().toString(), Toast.LENGTH_SHORT).show();
+		      
+		      if ( (resetMonth(calendar.getMonth()) == resetMonth(Calendar.getInstance().get(Calendar.MONTH))) ){
+		    	  System.out.println("Se ejecuta UpdateAll porque concuerda el mes");
+		    	  this.updateAll();
+		      }
+	      }else Toast.makeText(this, "Campos Incompletos", Toast.LENGTH_SHORT).show();
 	    }
     }
     
