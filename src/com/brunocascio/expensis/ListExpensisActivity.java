@@ -1,8 +1,5 @@
 package com.brunocascio.expensis;
 
-import java.sql.Date;
-import java.sql.Time;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.List;
 import android.os.Bundle;
@@ -16,10 +13,8 @@ import android.view.View.OnClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.support.v4.app.NavUtils;
-import android.text.format.DateFormat;
 
 public class ListExpensisActivity extends Activity implements OnClickListener, OnDateSetListener{
 	private ExpensiDataSource datasource;

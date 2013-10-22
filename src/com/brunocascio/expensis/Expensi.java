@@ -1,10 +1,5 @@
 package com.brunocascio.expensis;
 
-import java.sql.Date;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Locale;
-
 public class Expensi {
 	private long id;
 	private String description;

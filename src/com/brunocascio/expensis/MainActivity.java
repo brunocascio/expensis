@@ -47,7 +47,6 @@ public class MainActivity extends Activity implements ActionBar.OnNavigationList
                         android.R.id.text1,
                         new String[] {
                         		getString(R.string.nav_add_exp),
-                                getString(R.string.nav_add_cap),
                                 getString(R.string.nav_show_exp),
                                 getString(R.string.nav_exit),
                         }),
@@ -146,9 +145,12 @@ public class MainActivity extends Activity implements ActionBar.OnNavigationList
     
     @Override
     public boolean onNavigationItemSelected(int position, long id) {
-    	if (position == 2){
+    	if (position == 1){
     		Intent intent = new Intent(this, ListExpensisActivity.class);
     		startActivity(intent);
+    	}
+    	if (position == 2){
+    		finish();
     	}
         return true;
     }
