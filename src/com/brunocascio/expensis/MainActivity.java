@@ -1,15 +1,14 @@
 package com.brunocascio.expensis;
 
+import java.util.Calendar;
+
 import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 
-import android.support.v4.app.Fragment;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -24,9 +23,10 @@ public class MainActivity extends Activity implements ActionBar.OnNavigationList
      */
     private static final String STATE_SELECTED_NAVIGATION_ITEM = "selected_navigation_item";
     private ExpensiDataSource datasource;
-	//private List<Expensi> totalExpensis;
     private EditText description, price;
     private DatePicker calendar;
+    private String totalExpensis;
+    private TextView capitalActual;
     
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,20 +56,35 @@ public class MainActivity extends Activity implements ActionBar.OnNavigationList
         datasource = new ExpensiDataSource(this);
         datasource.open();
         
-        //totalExpensis = datasource.getAllExpensis();
+        totalExpensis = datasource.getExpensesFromMonth(Calendar.getInstance().get(Calendar.MONTH)).toString();
+        
+        capitalActual = (TextView) findViewById(R.id.total_cap);
+        capitalActual.setText("$ "+totalExpensis);
         
         calendar = (DatePicker) findViewById(R.id.fecha);
-        //calendar.setCalendarViewShown(true);
         
         description = (EditText) findViewById(R.id.text_description);
         price = (EditText) findViewById(R.id.text_price);
 
     }
     
+    private void updateAll(){
+    	//System.out.println("updateALL -> "+Calendar.getInstance().get(Calendar.MONTH) );
+        totalExpensis = datasource.getExpensesFromMonth(Calendar.getInstance().get(Calendar.MONTH)).toString();
+        capitalActual.setText("$ "+totalExpensis);
+    }
+    
+    private int resetMonth(int month){
+    	month += 1;
+    	if (month > 12 || month <= 0) month = 1;
+    	return month;
+    }
+    
     
     private String dateFromPicker(DatePicker c){
     	String cad = "";
-    	cad += c.getDayOfMonth()+"-"+c.getMonth()+"-"+c.getYear();
+    	int month = resetMonth(c.getMonth());
+    	cad += c.getDayOfMonth()+"-"+month+"-"+c.getYear();
     	return cad;
     }
     
@@ -80,16 +95,22 @@ public class MainActivity extends Activity implements ActionBar.OnNavigationList
 	    		  description.getText().toString(),
 	    		  Float.parseFloat(price.getText().toString()),
 	    		  dateFromPicker(calendar)
-	    		  );
+	    		  );	      
+	      datasource.createExpensi(expensi);
 	      
-	      datasource.createExpensi(expensi);    
 	      Toast.makeText(this, "Guardado: "+description.getText().toString(), Toast.LENGTH_SHORT).show();
+	      
+	      if ( (resetMonth(calendar.getMonth()) == resetMonth(Calendar.getInstance().get(Calendar.MONTH))) ){
+	    	  System.out.println("Se ejecuta UpdateAll porque concuerda el mes");
+	    	  this.updateAll();
+	      }
 	    }
     }
     
     @Override
     protected void onResume() {
       datasource.open();
+      this.updateAll();
       super.onResume();
     }
 
@@ -125,37 +146,11 @@ public class MainActivity extends Activity implements ActionBar.OnNavigationList
     
     @Override
     public boolean onNavigationItemSelected(int position, long id) {
-    	System.out.println(position+" ");
     	if (position == 2){
     		Intent intent = new Intent(this, ListExpensisActivity.class);
     		startActivity(intent);
     	}
-    	//Toast.makeText(getApplicationContext(), position+"", Toast.LENGTH_SHORT);
         return true;
-    }
-
-    /**
-     * A dummy fragment representing a section of the app, but that simply
-     * displays dummy text.
-     */
-    public static class DummySectionFragment extends Fragment {
-        /**
-         * The fragment argument representing the section number for this
-         * fragment.
-         */
-        public static final String ARG_SECTION_NUMBER = "section_number";
-
-        public DummySectionFragment() {
-        }
-
-        @Override
-        public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                Bundle savedInstanceState) {
-            View rootView = inflater.inflate(R.layout.fragment_main_dummy, container, false);
-            TextView dummyTextView = (TextView) rootView.findViewById(R.id.section_label);
-            dummyTextView.setText(Integer.toString(getArguments().getInt(ARG_SECTION_NUMBER)));
-            return rootView;
-        }
     }
 
 }

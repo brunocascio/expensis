@@ -1,6 +1,7 @@
 package com.brunocascio.expensis;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import android.content.ContentValues;
@@ -8,6 +9,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
+import android.widget.Toast;
 
 public class ExpensiDataSource {
 	  // Database fields
@@ -44,13 +46,14 @@ public class ExpensiDataSource {
 	    values.put(ExpensisSQLiteHelper.COLUMN_PRICE, exp.getPrice());
 	    values.put(ExpensisSQLiteHelper.COLUMN_DATE, exp.getDate().toString());
 	    
+	    System.out.println("createExpensi -> "+exp.getDate().toString());
+	    
 	    
 	    long insertId = database.insert(
 	    		ExpensisSQLiteHelper.TABLE_NAME
 	    		, null
 	    		, values
 	    );
-	    System.out.println(insertId);
 	    
 	    Cursor cursor = database.query(
 	    		ExpensisSQLiteHelper.TABLE_NAME
@@ -61,7 +64,6 @@ public class ExpensiDataSource {
 	    cursor.moveToFirst();
 	    Expensi newExpensi = cursorToExpensi(cursor);
 	    cursor.close();
-	    System.out.println(newExpensi.getDescription());
 	    return newExpensi;
 	  }
 
@@ -91,6 +93,69 @@ public class ExpensiDataSource {
 	    cursor.close();
 	    return expensis;
 	  }
+	  
+	  public Float getExpenses(){
+		  float total = 0;
+		  String[] columns = {  ExpensisSQLiteHelper.COLUMN_PRICE };
+		  
+		  Cursor cursor = database.query(
+				 ExpensisSQLiteHelper.TABLE_NAME,
+				 columns, null, null, null, null, null
+		  );
+		  
+		  cursor.moveToFirst();
+		  while (!cursor.isAfterLast()) {
+		      total += (cursor.getFloat(cursor.getColumnIndexOrThrow(ExpensisSQLiteHelper.COLUMN_PRICE)));
+		      cursor.moveToNext();
+		  }
+		  // make sure to close the cursor
+		  cursor.close();
+		return total;
+	  }
+	  
+	  public List<Expensi> getExpensisFromDate(String date){
+		List<Expensi> expensis = new ArrayList<Expensi>();
+		String[] args = { date };
+
+	    Cursor cursor = database.query(
+	    	ExpensisSQLiteHelper.TABLE_NAME
+	    	, allColumns
+	        , "date=?"
+	        , args
+	        , null
+	        , null
+	        , null);
+
+	    cursor.moveToFirst();
+	    while (!cursor.isAfterLast()) {
+	      Expensi expensi = cursorToExpensi(cursor);
+	      expensis.add(expensi);
+	      cursor.moveToNext();
+	    }
+	    // make sure to close the cursor
+	    cursor.close();
+	    return expensis;		  
+	  }
+	  
+	  public Object getExpensesFromMonth(int month) {
+		  float total = 0;
+		  System.out.println(month);
+		  Cursor cursor = database.rawQuery("SELECT price FROM " 
+				  + ExpensisSQLiteHelper.TABLE_NAME 
+				  + " where " 
+				  + ExpensisSQLiteHelper.COLUMN_DATE 
+				  + " like '%-"+(month+1)+"-%'" , null
+		  );
+		  
+		  cursor.moveToFirst();
+		  while (!cursor.isAfterLast()) {
+		      total += (cursor.getFloat(cursor.getColumnIndexOrThrow(ExpensisSQLiteHelper.COLUMN_PRICE)));
+		      cursor.moveToNext();
+		  }
+		  // make sure to close the cursor
+		  cursor.close();
+		return total;
+	  }
 
 	  private Expensi cursorToExpensi(Cursor cursor) {
 	    Expensi expensi = new Expensi(
@@ -102,4 +167,6 @@ public class ExpensiDataSource {
 	    expensi.setId(cursor.getLong(0));
 	    return expensi;
 	  }
+
+	
 }

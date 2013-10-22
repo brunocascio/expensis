@@ -1,5 +1,8 @@
 package com.brunocascio.expensis;
 
+import java.sql.Date;
+import java.sql.Time;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.List;
 import android.os.Bundle;
@@ -13,8 +16,10 @@ import android.view.View.OnClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.support.v4.app.NavUtils;
+import android.text.format.DateFormat;
 
 public class ListExpensisActivity extends Activity implements OnClickListener, OnDateSetListener{
 	private ExpensiDataSource datasource;
@@ -97,14 +102,27 @@ public class ListExpensisActivity extends Activity implements OnClickListener, O
 
 	@Override
 	public void onDateSet(DatePicker view, int year, int month, int day) {
-		this.edittext.setText(day+"-"+month+"-"+year);
+		String fecha = day+"-"+(month+1)+"-"+year;
+		this.edittext.setText(fecha);
 		
+		// Get results of Database for this Date
+		List<Expensi> L = datasource.getExpensisFromDate(edittext.getText().toString());
+		
+		ArrayAdapter<Expensi> adapter = new ArrayAdapter<Expensi>(
+	    		this
+	    		,android.R.layout.simple_list_item_activated_1
+	    		, L
+	    );
+		listView.setAdapter(adapter);
 	}
 
 	@Override
 	public void onClick(View v) {
 		if (v.getId() == R.id.fechaOrder){
-			DatePickerDialog dialog = new DatePickerDialog(this, this
+			
+			DatePickerDialog dialog = new DatePickerDialog(
+					  this
+					, this
 					, Calendar.getInstance().get(Calendar.YEAR)
 					, Calendar.getInstance().get(Calendar.MONTH)
 					, Calendar.getInstance().get(Calendar.DAY_OF_MONTH));
