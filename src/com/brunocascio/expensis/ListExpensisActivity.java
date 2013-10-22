@@ -114,7 +114,6 @@ public class ListExpensisActivity extends Activity implements OnClickListener, O
 	@Override
 	public void onClick(View v) {
 		if (v.getId() == R.id.fechaOrder){
-			
 			DatePickerDialog dialog = new DatePickerDialog(
 					  this
 					, this

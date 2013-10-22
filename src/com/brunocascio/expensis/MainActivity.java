@@ -106,7 +106,7 @@ public class MainActivity extends Activity implements ActionBar.OnNavigationList
 		      Toast.makeText(this, "Guardado: "+description.getText().toString(), Toast.LENGTH_SHORT).show();
 		      
 		      if ( (resetMonth(calendar.getMonth()) == resetMonth(Calendar.getInstance().get(Calendar.MONTH))) ){
-		    	  System.out.println("Se ejecuta UpdateAll porque concuerda el mes");
+		    	  //System.out.println("Se ejecuta UpdateAll porque concuerda el mes");
 		    	  this.updateAll();
 		      }
 	      }else Toast.makeText(this, "Campos Incompletos", Toast.LENGTH_SHORT).show();

@@ -22,7 +22,7 @@ public class ExpensiDataSource {
 	  };
 
 	  public ExpensiDataSource(Context context) {
-	    dbHelper = new ExpensisSQLiteHelper(context);
+		  dbHelper = new ExpensisSQLiteHelper(context);
 	  }
 
 	  public void open() throws SQLException {
@@ -34,7 +34,7 @@ public class ExpensiDataSource {
 	  }
 
 	  public void close() {
-	    dbHelper.close();
+		  dbHelper.close();
 	  }
 
 	  public Expensi createExpensi(Expensi exp){
@@ -44,7 +44,7 @@ public class ExpensiDataSource {
 	    values.put(ExpensisSQLiteHelper.COLUMN_PRICE, exp.getPrice());
 	    values.put(ExpensisSQLiteHelper.COLUMN_DATE, exp.getDate().toString());
 	    
-	    System.out.println("createExpensi -> "+exp.getDate().toString());
+	   // System.out.println("createExpensi -> "+exp.getDate().toString());
 	    
 	    
 	    long insertId = database.insert(
@@ -67,7 +67,7 @@ public class ExpensiDataSource {
 
 	  public void deleteExpensi(Expensi exp) {
 	    long id = exp.getId();
-	    System.out.println("exp deleted with id: " + id);
+	   // System.out.println("exp deleted with id: " + id);
 	    database.delete(
 	    		ExpensisSQLiteHelper.TABLE_NAME,
 	    		ExpensisSQLiteHelper.COLUMN_ID
@@ -137,7 +137,7 @@ public class ExpensiDataSource {
 	  
 	  public Object getExpensesFromMonth(int month) {
 		  float total = 0;
-		  System.out.println(month);
+		  //System.out.println(month);
 		  Cursor cursor = database.rawQuery("SELECT price FROM " 
 				  + ExpensisSQLiteHelper.TABLE_NAME 
 				  + " where " 
