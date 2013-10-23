@@ -48,6 +48,6 @@ public class Expensi {
 	// Will be used by the ArrayAdapter in the ListView
 	@Override
 	public String toString() {
-	  return description+" $"+price+" "+" "+date;
+	  return description+" || "+" $"+price+" || "+" "+date;
 	}
 }

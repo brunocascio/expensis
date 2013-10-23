@@ -74,6 +74,15 @@ public class ExpensiDataSource {
 	    		+ " = " + id, null
 	    );
 	  }
+	  
+	  public void deleteExpensi(long id) {
+		   // System.out.println("exp deleted with id: " + id);		  			  	
+		    database.delete(
+		    		ExpensisSQLiteHelper.TABLE_NAME,
+		    		ExpensisSQLiteHelper.COLUMN_ID
+		    		+ " = " + id, null
+		    );    
+	  }
 
 	  public List<Expensi> getAllExpensis() {
 	    List<Expensi> expensis = new ArrayList<Expensi>();
@@ -133,6 +142,27 @@ public class ExpensiDataSource {
 	    // make sure to close the cursor
 	    cursor.close();
 	    return expensis;		  
+	  }
+	  
+	  public List<Expensi> getExpensisFromMonth(int m){
+		  List<Expensi> expensis = new ArrayList<Expensi>();
+		  
+		  Cursor cursor = database.rawQuery("SELECT * FROM " 
+				  + ExpensisSQLiteHelper.TABLE_NAME 
+				  + " where " 
+				  + ExpensisSQLiteHelper.COLUMN_DATE 
+				  + " like '%-"+(m)+"-%'" , null
+		  );
+		  
+		  cursor.moveToFirst();
+		  while (!cursor.isAfterLast()) {
+			  Expensi expensi = cursorToExpensi(cursor);
+			  expensis.add(expensi);
+			  cursor.moveToNext();
+		  }
+		  // make sure to close the cursor
+		  cursor.close();
+		  return expensis;
 	  }
 	  
 	  public Object getExpensesFromMonth(int month) {
