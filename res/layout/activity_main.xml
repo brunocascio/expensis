@@ -53,7 +53,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/description"
-            android:maxLength="20" >
+            android:maxLength="20"
+            android:inputType="textCapSentences" >
 
             <requestFocus />
         </EditText>
