@@ -101,12 +101,10 @@ public class MainActivity extends Activity implements ActionBar.OnNavigationList
 		    		  Float.parseFloat(price.getText().toString()),
 		    		  dateFromPicker(calendar)
 		    		  );	      
-		      datasource.createExpensi(expensi);
-		      
+		      datasource.createExpensi(expensi);		      
+		      Toast.makeText(this, "Guardado: "+description.getText().toString(), Toast.LENGTH_SHORT).show();
 		      description.setText("");
 		      price.setText("");
-		      
-		      Toast.makeText(this, "Guardado: "+description.getText().toString(), Toast.LENGTH_SHORT).show();
 		      
 		      if ( (resetMonth(calendar.getMonth()) == resetMonth(Calendar.getInstance().get(Calendar.MONTH))) ){
 		    	  //System.out.println("Se ejecuta UpdateAll porque concuerda el mes");
