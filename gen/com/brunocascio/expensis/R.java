@@ -46,22 +46,22 @@ public final class R {
         public static final int ic_launcher=0x7f020000;
     }
     public static final class id {
-        public static final int button_add=0x7f09000e;
-        public static final int container=0x7f090005;
-        public static final int container_label2=0x7f090008;
-        public static final int container_labels=0x7f090007;
-        public static final int container_total=0x7f090006;
-        public static final int fecha=0x7f09000d;
-        public static final int fechaOrder=0x7f090001;
-        public static final int filter_for_date=0x7f090000;
-        public static final int listExp=0x7f090004;
-        public static final int section_label=0x7f09000f;
-        public static final int spinner_month=0x7f090003;
-        public static final int text_cap_actual=0x7f090009;
-        public static final int text_description=0x7f09000b;
-        public static final int text_filter_month=0x7f090002;
-        public static final int text_price=0x7f09000c;
-        public static final int total_cap=0x7f09000a;
+        public static final int button_add=0x7f09000c;
+        public static final int button_today=0x7f09000d;
+        public static final int container=0x7f090004;
+        public static final int container_label2=0x7f09000f;
+        public static final int container_labels=0x7f090006;
+        public static final int container_total=0x7f090005;
+        public static final int fecha=0x7f09000b;
+        public static final int fechaOrder=0x7f090000;
+        public static final int listExp=0x7f090003;
+        public static final int section_label=0x7f09000e;
+        public static final int spinner_month=0x7f090001;
+        public static final int text_cap_actual=0x7f090007;
+        public static final int text_description=0x7f090009;
+        public static final int text_price=0x7f09000a;
+        public static final int total_cap=0x7f090008;
+        public static final int total_list=0x7f090002;
     }
     public static final class layout {
         public static final int activity_list_expensis=0x7f030000;
@@ -81,6 +81,7 @@ public final class R {
         public static final int cancel=0x7f060016;
         public static final int click=0x7f06000e;
         public static final int date=0x7f06000a;
+        public static final int date_choose=0x7f060018;
         public static final int date_filter=0x7f06000d;
         public static final int description=0x7f060006;
         public static final int dialog_message=0x7f060013;
@@ -96,6 +97,7 @@ public final class R {
         public static final int price=0x7f060007;
         public static final int title_activity_add_cap=0x7f060001;
         public static final int title_activity_list_expensis=0x7f06000b;
+        public static final int today=0x7f060017;
         public static final int value=0x7f060010;
     }
     public static final class style {

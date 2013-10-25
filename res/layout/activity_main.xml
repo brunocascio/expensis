@@ -16,35 +16,28 @@
         <LinearLayout
             android:id="@+id/container_labels"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" >
+            android:layout_height="wrap_content"
+            android:gravity="right" >
 
-            <LinearLayout
-                android:id="@+id/container_label2"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
+            <TextView
+                android:id="@+id/text_cap_actual"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/expenses"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:textSize="15sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/total_cap"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:gravity="right" >
-
-                <TextView
-                    android:id="@+id/text_cap_actual"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:text="@string/expenses"
-                    android:textAppearance="?android:attr/textAppearanceSmall"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:id="@+id/total_cap"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:paddingLeft="10dp"
-                    android:text="@string/value"
-                    android:textAppearance="?android:attr/textAppearanceSmall"
-                    android:textColor="#FF8000" />
-
-            </LinearLayout>
+                android:paddingLeft="10dp"
+                android:text="@string/value"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:textColor="#FF8000"
+                android:textSize="15sp" />
 
         </LinearLayout>
 
@@ -77,12 +70,25 @@
             android:spinnersShown="true"
             android:startYear="2012" />
 
-        <Button
-            android:id="@+id/button_add"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:onClick="onClick"
-            android:text="@string/add" />
+            android:layout_height="wrap_content" >
+
+            <Button style="?android:attr/buttonStyle"
+                android:id="@+id/button_add"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="onClick"
+                android:text="@string/add" />
+
+            <Button style="?android:attr/buttonStyle"
+                android:id="@+id/button_today"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="onClick"
+                android:text="@string/today" />
+
+        </LinearLayout>
     </LinearLayout>
 
 </FrameLayout>

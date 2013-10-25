@@ -20,6 +20,7 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 import android.support.v4.app.NavUtils;
 
@@ -33,13 +34,15 @@ public class ListExpensisActivity extends Activity implements OnItemSelectedList
 	private ArrayAdapter<Expensi> adapter;
 	private AlertDialog dialog;
 	private int positionDelete;
+	private TextView total;
+	private float sum;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_list_expensis);
 		// Show the Up button in the action bar.
-		setupActionBar();
+		setupActionBar();		
 		
 		// Database pipe
 		datasource = new ExpensiDataSource(this);
@@ -50,10 +53,7 @@ public class ListExpensisActivity extends Activity implements OnItemSelectedList
 	    edittext = (EditText) findViewById(R.id.fechaOrder);
 	    edittext.setOnClickListener(this);
 	    
-	    // ======================= Dialogs ===============================
-		    
-	    // ======================= FIn Dialogs ===========================
-	    	
+	    total = (TextView) findViewById(R.id.total_list);
 	    
 	    // =============== Lista de gastos ==============================
 	    listView = (ListView) findViewById(R.id.listExp);
@@ -102,7 +102,7 @@ public class ListExpensisActivity extends Activity implements OnItemSelectedList
 	    // ===================== MESES ===============================
 	    spinnerMonths = (Spinner) findViewById(R.id.spinner_month);
 	    adapterMonths = ArrayAdapter.createFromResource(
-	            this, R.array.months_array, android.R.layout.simple_spinner_item);
+	            this, R.array.months_array, android.R.layout.simple_spinner_dropdown_item);
 	    adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 	    spinnerMonths.setAdapter(adapterMonths);
 	    int mesActual = Calendar.getInstance().get(Calendar.MONTH);
@@ -173,6 +173,11 @@ public class ListExpensisActivity extends Activity implements OnItemSelectedList
 	    		, L
 	    );
 		listView.setAdapter(adapter);
+		sum = 0;
+		for (Expensi e:  L ){
+			sum += e.getPrice();
+		}
+		total.setText("Total ("+fecha+"): $ "+sum);
 	}
 
 	@Override
@@ -198,6 +203,11 @@ public class ListExpensisActivity extends Activity implements OnItemSelectedList
 		List<Expensi> L = datasource.getExpensisFromMonth(pos+1);
 		adapter.clear();
 		adapter.addAll(L);
+		sum = 0;
+		for (Expensi e:  L ){
+			sum += e.getPrice();
+		}
+		total.setText("Total "+spinnerMonths.getItemAtPosition(pos).toString()+": $ "+sum);
 		adapter.notifyDataSetChanged();
 	    listView.setAdapter(adapter);
 		
@@ -205,5 +215,16 @@ public class ListExpensisActivity extends Activity implements OnItemSelectedList
 
 	@Override
 	public void onNothingSelected(AdapterView<?> arg0) {};
+	
+	/*
+	 * If user press back button, reset navigation bar.
+	 * @see android.app.Activity#onBackPressed()
+	 */
+	@Override
+	public void onBackPressed()
+	{
+		 NavUtils.navigateUpFromSameTask(this);
+	     super.onBackPressed();
+	}
 
 }

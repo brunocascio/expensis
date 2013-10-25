@@ -58,5 +58,7 @@
     <string name="dialog_title">Borrar gasto</string>
     <string name="ok">OK</string>
     <string name="cancel">Cancelar</string>
+    <string name="today">Hoy</string>
+    <string name="date_choose">Elegir Fecha</string>
 
 </resources>

@@ -27,6 +27,7 @@ public class MainActivity extends Activity implements ActionBar.OnNavigationList
     private DatePicker calendar;
     private String totalExpensis;
     private TextView capitalActual;
+    private ActionBar actionBar;
     
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,7 +35,7 @@ public class MainActivity extends Activity implements ActionBar.OnNavigationList
         setContentView(R.layout.activity_main);
 
         // Set up the action bar to show a dropdown list.
-        final ActionBar actionBar = getActionBar();
+        actionBar = getActionBar();
         actionBar.setDisplayShowTitleEnabled(false);
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
 
@@ -88,8 +89,9 @@ public class MainActivity extends Activity implements ActionBar.OnNavigationList
     }
     
     public void onClick(View view) {
-	    
-	    if (view.getId() == R.id.button_add){	 
+    	
+    	switch (view.getId()) {
+		case R.id.button_add: 
 	      if (description.getText() != null 
 	    	&& !description.getText().toString().equals("")
 	    	&& price.getText() != null 
@@ -111,7 +113,11 @@ public class MainActivity extends Activity implements ActionBar.OnNavigationList
 		    	  this.updateAll();
 		      }
 	      }else Toast.makeText(this, "Campos Incompletos", Toast.LENGTH_SHORT).show();
-	    }
+	      break;
+		case R.id.button_today:
+			calendar.getCalendarView().setDate(Calendar.getInstance().getTimeInMillis());
+			break;
+    	}
     }
     
     @Override
