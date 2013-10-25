@@ -42,7 +42,7 @@
     <string name="nav_show_exp">Mostrar gastos</string>
     <string name="nav_exit">Salir</string>
     <string name="description">Descripción</string>
-    <string name="price">Precio</string>
+    <string name="price">Importe</string>
     <string name="add">Agregar</string>
     <string name="nav_add_exp">Agregar gasto</string>
     <string name="date">01/01/2013</string>
