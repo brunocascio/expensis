@@ -9,9 +9,11 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.andexert.calendarlistview.library.DatePickerController;
 import com.andexert.calendarlistview.library.DayPickerView;
+import com.brunocascio.expensis.Exceptions.InvalidFieldsException;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -34,7 +36,7 @@ public class NewExpenseActivity extends ActionBarActivity implements DatePickerC
     public NewExpenseActivity(){
         // today
         c = Calendar.getInstance();
-        SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy");
+        SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy");
         this.today = df.format(c.getTime());
     }
 
@@ -45,6 +47,7 @@ public class NewExpenseActivity extends ActionBarActivity implements DatePickerC
 
         // Action Bar (Toolbar)
         toolbar = (Toolbar) findViewById(R.id.app_bar);
+        toolbar.setTitle("");
         setSupportActionBar(toolbar);
         getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -96,12 +99,34 @@ public class NewExpenseActivity extends ActionBarActivity implements DatePickerC
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        if ( id == R.id.saveExpense ){
-            //TODO: save expense
-            Log.i("save", "click");
+        if ( id == R.id.saveExpense )
+        {
+            try {
+
+                Expense expense = Expense.prepareExpense(
+                    expenseDescription.getText().toString(),
+                    expenseAmount.getText().toString(),
+                    inputExpenseDate.getText().toString()
+                );
+
+                expense.save();
+
+                clearFields();
+
+                Toast.makeText(getApplicationContext(), "OK", Toast.LENGTH_SHORT).show();
+
+            } catch (InvalidFieldsException e) {
+                Log.e("InvalidFieldException", e.getMessage());
+                Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+            }
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private void clearFields(){
+        expenseDescription.setText("");
+        expenseAmount.setText("");
     }
 
     @Override
@@ -111,7 +136,7 @@ public class NewExpenseActivity extends ActionBarActivity implements DatePickerC
 
     @Override
     public void onDayOfMonthSelected(int year, int month, int day) {
-        inputExpenseDate.setText(day + "-" + month + "-" + year);
+        inputExpenseDate.setText(day + "-" + (month+1) + "-" + year);
         mMaterialDialog.dismiss();
     }
 }

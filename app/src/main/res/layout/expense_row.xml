@@ -1,19 +1,48 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="horizontal"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/rowDescription"
-        android:layout_gravity="center_vertical"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+    <android.support.v7.widget.CardView
+        xmlns:card_view="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/card_view"
+        android:layout_width="match_parent"
+        android:layout_height="72dp"
+        card_view:cardCornerRadius="0dp">
+            <LinearLayout
+                android:orientation="horizontal"
+                android:padding="@dimen/space16"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:dividerPadding="0dp">
 
-    <TextView
-        android:id="@+id/rowAmount"
-        android:layout_gravity="center_vertical"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+                <TextView
+                    android:id="@+id/rowAmount"
+                    android:layout_gravity="center_vertical"
+                    android:layout_width="wrap_content"
+                    android:text="prueba"
+                    android:layout_height="match_parent" />
 
-</LinearLayout>
+                <LinearLayout
+                    android:paddingLeft="@dimen/space16"
+                    android:orientation="vertical"
+                    android:layout_width="fill_parent"
+                    android:layout_height="match_parent">
+
+                    <TextView
+                        android:id="@+id/rowDescription"
+                        android:layout_gravity="center_vertical"
+                        android:layout_width="match_parent"
+                        android:text="prueba"
+                        android:layout_height="wrap_content" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="prueba"
+                        android:id="@+id/rowDate" />
+                </LinearLayout>
+
+            </LinearLayout>
+    </android.support.v7.widget.CardView>
+</RelativeLayout>

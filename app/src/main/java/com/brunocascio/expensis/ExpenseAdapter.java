@@ -16,7 +16,7 @@ import java.util.List;
 public class ExpenseAdapter extends RecyclerView.Adapter<ExpenseAdapter.ExpenseViewHolder> {
 
     private LayoutInflater layoutInflater;
-    private List<Expense> data = Collections.emptyList();
+    private List<Expense> data;
     private Context context;
 
     public ExpenseAdapter(Context context, List<Expense> data){
@@ -38,8 +38,9 @@ public class ExpenseAdapter extends RecyclerView.Adapter<ExpenseAdapter.ExpenseV
     @Override
     public void onBindViewHolder(ExpenseViewHolder viewHolder, int i) {
         Expense e = data.get(i);
-        viewHolder.description.setText(e.description);
-        viewHolder.amount.setText(e.amount+"");
+        viewHolder.description.setText(e.getDescription());
+        viewHolder.amount.setText(e.getAmount()+"");
+        viewHolder.date.setText(e.getFullDate());
     }
 
     @Override
@@ -51,12 +52,14 @@ public class ExpenseAdapter extends RecyclerView.Adapter<ExpenseAdapter.ExpenseV
 
         TextView description;
         TextView amount;
+        TextView date;
 
         public ExpenseViewHolder(View itemView) {
             super(itemView);
 
             description = (TextView) itemView.findViewById(R.id.rowDescription);
             amount = (TextView) itemView.findViewById(R.id.rowAmount);
+            date = (TextView) itemView.findViewById(R.id.rowDate);
         }
     }
 }

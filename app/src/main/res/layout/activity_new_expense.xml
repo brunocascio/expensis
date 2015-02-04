@@ -10,11 +10,15 @@
         android:id="@+id/app_bar"
         layout="@layout/app_bar" />
 
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="5dp"
+        android:background="@drawable/shadow_rectangle" />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="center_vertical"
-        android:padding="@dimen/paddingDefault"
         android:orientation="vertical">
 
         <EditText
@@ -22,6 +26,8 @@
             android:layout_height="wrap_content"
             android:id="@+id/expenseDescription"
             android:capitalize="sentences"
+            android:textColor="@color/grey"
+            android:textColorHint="@color/grey_light"
             android:hint="@string/description"
             android:layout_gravity="center" />
 
@@ -30,14 +36,18 @@
             android:layout_height="wrap_content"
             android:inputType="numberSigned"
             android:hint="@string/amount"
+            android:textColor="@color/grey"
+            android:textColorHint="@color/grey_light"
             android:layout_gravity="center"
-            android:digits="6"
+            android:maxLength="6"
             android:id="@+id/expenseAmount" />
 
         <EditText
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
+            android:textColor="@color/grey"
+            android:textColorHint="@color/grey_light"
             android:editable="false"
             android:focusable="false"
             android:focusableInTouchMode="false"

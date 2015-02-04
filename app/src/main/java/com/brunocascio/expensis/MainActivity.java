@@ -55,6 +55,8 @@ public class MainActivity extends ActionBarActivity {
 
         recyclerView = (RecyclerView) findViewById(R.id.expensesList);
 
+        recyclerView.setHasFixedSize(true);
+
         recyclerView.setAdapter(expenseAdapter);
 
         recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
@@ -62,17 +64,7 @@ public class MainActivity extends ActionBarActivity {
 
 
     public static List<Expense> getData(){
-        List<Expense> L = new ArrayList<Expense>();
-        for (int i=0; i < 3; i++){
-            Expense e = new Expense();
-            e.amount = 100 + i;
-            e.day = 1;
-            e.month = 1;
-            e.year = 2015;
-            e.description = "Gasto";
-            L.add(e);
-        }
-        return L;
+        return Expense.listAll(Expense.class);
     }
 
 
