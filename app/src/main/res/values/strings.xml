@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Expensis</string>
+    <string name="title_activity_main">MainActivity</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="exit">Exit</string>
+    <string name="title_activity_new_expense">NewExpenseActivity</string>
+    <string name="description">Description</string>
+    <string name="amount">Amount</string>
+    <string name="date">Date</string>
+    <string name="save">Save</string>
+
+</resources>

@@ -1,0 +1,6 @@
+<resources>
+    <style name="AppTheme" parent="AppTheme.Base">
+        <item name="android:colorPrimary">@color/orange</item>
+        <item name="android:textColorPrimary">@color/orange400</item>
+    </style>
+</resources>
