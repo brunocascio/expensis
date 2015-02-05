@@ -2,6 +2,8 @@ package com.brunocascio.expensis;
 
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -17,6 +19,7 @@ import com.brunocascio.expensis.Exceptions.InvalidFieldsException;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.List;
 
 import me.drakeet.materialdialog.MaterialDialog;
 
@@ -32,6 +35,9 @@ public class NewExpenseActivity extends ActionBarActivity implements DatePickerC
     private View viewCalendar;
     private String today;
     private Calendar c;
+    private List<Expense> expenses;
+    private ExpenseAdapter expenseAdapter;
+    private RecyclerView recyclerView;
 
     public NewExpenseActivity(){
         // today
@@ -51,7 +57,6 @@ public class NewExpenseActivity extends ActionBarActivity implements DatePickerC
         setSupportActionBar(toolbar);
         getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
 
         // Calendar Plugin
         viewCalendar = LayoutInflater.from(this).inflate(R.layout.calendar, null);
@@ -82,6 +87,20 @@ public class NewExpenseActivity extends ActionBarActivity implements DatePickerC
                 mMaterialDialog.show();
             }
         });
+
+        // recently added expenses
+        expenses = Expense.getRecentlyAddedExpenses();
+
+        // RecyclerView (Expenses List)
+        expenseAdapter = new ExpenseAdapter(getApplicationContext(), expenses);
+
+        recyclerView = (RecyclerView) findViewById(R.id.expensesRecentlyList);
+
+        recyclerView.setHasFixedSize(true);
+
+        recyclerView.setAdapter(expenseAdapter);
+
+        recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
     }
 
     @Override
@@ -103,17 +122,20 @@ public class NewExpenseActivity extends ActionBarActivity implements DatePickerC
         {
             try {
 
+                // Validate input and get an expense to save
                 Expense expense = Expense.prepareExpense(
                     expenseDescription.getText().toString(),
                     expenseAmount.getText().toString(),
                     inputExpenseDate.getText().toString()
                 );
 
-                expense.save();
+                expense.save(); // save in DB
 
-                clearFields();
+                expenses.add(0, expense); // add expense to list of expenses
+                expenseAdapter.notifyItemInserted(0); // realtime add expense to list
+                recyclerView.scrollToPosition(0); // show new element added
 
-                Toast.makeText(getApplicationContext(), "OK", Toast.LENGTH_SHORT).show();
+                clearFields(); //clear inputs
 
             } catch (InvalidFieldsException e) {
                 Log.e("InvalidFieldException", e.getMessage());

@@ -2,10 +2,14 @@ package com.brunocascio.expensis;
 
 import com.brunocascio.expensis.Exceptions.InvalidFieldsException;
 import com.orm.SugarRecord;
+import com.orm.query.Condition;
+import com.orm.query.Select;
 
 import java.text.DateFormatSymbols;
 import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.List;
 import java.util.Locale;
 
 /**
@@ -17,6 +21,7 @@ public class Expense extends SugarRecord<Expense> {
     private int month;
     private int day;
     private int year;
+    private static List<Expense> recentlyExpenses;
 
     public Expense(){}
 
@@ -62,12 +67,57 @@ public class Expense extends SugarRecord<Expense> {
     }
 
     /*
-     * Verfy is a string date is valid
+     * @return Boolean
+     *     return true if a string date is valid
      */
     static boolean isLegalDate(String s) {
         SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
         sdf.setLenient(false);
         return sdf.parse(s, new ParsePosition(0)) != null;
+    }
+
+    public static List<Expense> getRecentlyAddedExpenses() {
+
+        return Select.from(Expense.class).orderBy("id DESC").limit("10").list();
+    }
+
+    /*
+     * @return Boolean
+     *  return true if expense is from today
+     */
+    public boolean isFromToday(){
+
+        Calendar c = Calendar.getInstance();
+        int day = c.get(Calendar.DAY_OF_MONTH);
+        int month = (c.get(Calendar.MONTH)+1);
+        int year = c.get(Calendar.YEAR);
+
+        return ( (this.day == day) && (this.month == month) && (this.year == year) );
+    }
+
+    /*
+     * @return Boolean
+     *  return true if expense is from currently month
+     */
+    public boolean isCurrentlyMonth(){
+
+        Calendar c = Calendar.getInstance();
+        int month = (c.get(Calendar.MONTH)+1);
+        int year = c.get(Calendar.YEAR);
+
+        return ( (this.month == month) && (this.year == year) );
+    }
+
+    /*
+     * @return Boolean
+     *  return true if expense is from currently year
+     */
+    public boolean isCurrentlyYear(){
+
+        Calendar c = Calendar.getInstance();
+        int year = c.get(Calendar.YEAR);
+
+        return (this.year == year);
     }
 
                                 /* Setters and getters */
@@ -121,5 +171,10 @@ public class Expense extends SugarRecord<Expense> {
         final String[] months = DateFormatSymbols.getInstance(Locale.getDefault()).getMonths();
 
         return this.day + " " + months[this.month-1];
+    }
+
+    @Override
+    public String toString() {
+        return this.description + " | " + this.amount + " | " + this.getFullDate();
     }
 }

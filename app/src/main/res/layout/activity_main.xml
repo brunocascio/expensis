@@ -1,5 +1,6 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
     xmlns:fab="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -13,8 +14,82 @@
 
     <View
         android:layout_width="match_parent"
-        android:layout_height="5dp"
+        android:layout_height="4dp"
         android:background="@drawable/shadow_rectangle" />
+
+    <android.support.v7.widget.CardView
+        xmlns:card_view="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/card_exepenses"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        card_view:cardCornerRadius="0dp"
+        card_view:cardBackgroundColor="@color/white">
+            <GridLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:columnCount="2"
+                android:rowCount="3">
+                    <TextView
+                        android:layout_height="wrap_content"
+                        android:layout_width="100dp"
+                        android:background="@color/grey_light"
+                        android:textColor="@color/white"
+                        android:textSize="18dp"
+                        android:gravity="center"
+                        android:padding="@dimen/paddingDefault"
+                        android:id="@+id/totalTodayText"
+                        android:text="Hoy" />
+                    <TextView
+                        android:layout_height="wrap_content"
+                        android:layout_width="fill_parent"
+                        android:textColor="@color/orange400"
+                        android:background="@color/white"
+                        android:textSize="18dp"
+                        android:gravity="center"
+                        android:padding="@dimen/paddingDefault"
+                        android:id="@+id/totalToday" />
+
+                    <TextView
+                        android:layout_height="wrap_content"
+                        android:layout_width="100dp"
+                        android:background="@color/grey_light"
+                        android:textColor="@color/white"
+                        android:textSize="18dp"
+                        android:gravity="center"
+                        android:padding="@dimen/paddingDefault"
+                        android:id="@+id/totalMonthText"
+                        android:text="Mes"/>
+                    <TextView
+                        android:layout_height="wrap_content"
+                        android:layout_width="fill_parent"
+                        android:id="@+id/totalMonth"
+                        android:textColor="@color/orange400"
+                        android:background="@color/white"
+                       android:textSize="18dp"
+                        android:gravity="center"
+                        android:padding="@dimen/paddingDefault"/>
+
+                    <TextView
+                        android:layout_height="wrap_content"
+                        android:layout_width="100dp"
+                        android:background="@color/grey_light"
+                        android:textColor="@color/white"
+                        android:textSize="18dp"
+                        android:gravity="center"
+                        android:padding="@dimen/paddingDefault"
+                        android:id="@+id/totalYearText"
+                        android:text="Año" />
+                    <TextView
+                        android:layout_height="wrap_content"
+                        android:layout_width="fill_parent"
+                        android:id="@+id/totalYear"
+                        android:textColor="@color/orange400"
+                        android:background="@color/white"
+                        android:textSize="18dp"
+                        android:gravity="center"
+                        android:padding="@dimen/paddingDefault" />
+            </GridLayout>
+     </android.support.v7.widget.CardView>
 
     <android.support.v4.widget.DrawerLayout
         android:id="@+id/drawer_layout"
@@ -41,6 +116,7 @@
                         android:layout_margin="16dp"
                         fab:fab_colorNormal="@color/orange"
                         fab:fab_colorPressed="@color/white"
+                        fab:fab_type="mini"
                         fab:fab_colorRipple="@color/ripple_material_light"
                         android:src="@drawable/ic_action_new" />
             </FrameLayout>
