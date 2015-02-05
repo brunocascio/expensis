@@ -29,6 +29,7 @@
             android:textColor="@color/grey"
             android:textColorHint="@color/grey_light"
             android:hint="@string/description"
+            android:maxLength="50"
             android:layout_gravity="center" />
 
         <EditText
@@ -39,7 +40,7 @@
             android:textColor="@color/grey"
             android:textColorHint="@color/grey_light"
             android:layout_gravity="center"
-            android:maxLength="6"
+            android:maxLength="5"
             android:id="@+id/expenseAmount" />
 
         <EditText

@@ -2,8 +2,11 @@ package com.brunocascio.expensis;
 
 import com.brunocascio.expensis.Exceptions.InvalidFieldsException;
 import com.orm.SugarRecord;
+
+import java.text.DateFormatSymbols;
 import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
+import java.util.Locale;
 
 /**
  * Created by d3m0n on 02/02/15.
@@ -69,8 +72,8 @@ public class Expense extends SugarRecord<Expense> {
 
                                 /* Setters and getters */
 
-    public float getAmount() {
-        return this.amount;
+    public int getAmount() {
+        return Math.round(this.amount);
     }
 
     public String getDescription() {
@@ -111,5 +114,12 @@ public class Expense extends SugarRecord<Expense> {
 
     public String getFullDate() {
         return this.day + "-" + this.month + "-" + this.year;
+    }
+
+    public String getFullDateWithOutYear(){
+        // Get month names
+        final String[] months = DateFormatSymbols.getInstance(Locale.getDefault()).getMonths();
+
+        return this.day + " " + months[this.month-1];
     }
 }

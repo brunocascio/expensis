@@ -1,9 +1,9 @@
 <resources>
     <style name="AppTheme" parent="AppTheme.Base">
-        <item name="android:colorPrimary">@color/orange</item>
-        <item name="android:textColorPrimary">@color/orange400</item>
         <item name="android:colorAccent">@color/orange</item>
-        <item name="android:textColor">@color/grey</item>
+        <item name="android:colorPrimary">@color/white</item>
+        <item name="android:textColorPrimary">@color/white</item>
+        <item name="android:windowNoTitle">true</item>
 
         <item name="android:windowContentTransitions">true</item>
         <item name="android:windowAllowEnterTransitionOverlap">true</item>

@@ -1,48 +1,67 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:id="@+id/card_container">
 
     <android.support.v7.widget.CardView
         xmlns:card_view="http://schemas.android.com/apk/res-auto"
         android:id="@+id/card_view"
         android:layout_width="match_parent"
         android:layout_height="72dp"
-        card_view:cardCornerRadius="0dp">
+        card_view:cardBackgroundColor="@color/white">
             <LinearLayout
                 android:orientation="horizontal"
-                android:padding="@dimen/space16"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:dividerPadding="0dp">
-
-                <TextView
-                    android:id="@+id/rowAmount"
-                    android:layout_gravity="center_vertical"
-                    android:layout_width="wrap_content"
-                    android:text="prueba"
-                    android:layout_height="match_parent" />
+                android:paddingLeft="@dimen/paddingDefault"
+                android:paddingRight="@dimen/paddingDefault">
 
                 <LinearLayout
-                    android:paddingLeft="@dimen/space16"
+                    android:layout_marginRight="@dimen/paddingDefault"
                     android:orientation="vertical"
-                    android:layout_width="fill_parent"
-                    android:layout_height="match_parent">
+                    android:layout_width="100dp"
+                    android:background="@color/orange100"
+                    android:layout_height="match_parent"
+                    android:padding="@dimen/paddingDefault"
+                    android:layout_gravity="center"
+                    android:gravity="center_vertical|center_horizontal">
 
                     <TextView
-                        android:id="@+id/rowDescription"
-                        android:layout_gravity="center_vertical"
+                        android:id="@+id/rowAmount"
+                        android:gravity="center_vertical|center_horizontal"
+                        android:textAlignment="center"
+                        android:layout_height="wrap_content"
+                        android:textSize="18dp"
+                        android:textStyle="bold"
+                        android:textColor="@color/white"
                         android:layout_width="match_parent"
-                        android:text="prueba"
-                        android:layout_height="wrap_content" />
+                        android:text="prueba" />
 
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:textSize="13dp"
+                        android:textAlignment="center"
+                        android:textColor="@color/white"
+                        android:gravity="center_vertical|center_horizontal"
                         android:text="prueba"
                         android:id="@+id/rowDate" />
                 </LinearLayout>
 
+                <TextView
+                    android:id="@+id/rowDescription"
+                    android:layout_gravity="center_vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="prueba"
+                    android:textColor="@color/grey"
+                    android:textSize="15sp" />
+
             </LinearLayout>
     </android.support.v7.widget.CardView>
-</RelativeLayout>
+</LinearLayout>
