@@ -25,9 +25,12 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Currency;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+
+import static com.orm.SugarApp.getSugarContext;
 
 
 public class MainActivity extends ActionBarActivity {
@@ -56,10 +59,10 @@ public class MainActivity extends ActionBarActivity {
         getSupportActionBar().setTitle(R.string.app_name);
 
         // get expenses
-        expenses = getExpenses();
+        expenses = Expense.getExpenses();
 
         // get total amounts
-        mTotal = getTotalAmounts();
+        mTotal = Expense.getTotalAmounts();
 
         // Statistics
         // TODO: correct currencyCode
@@ -95,21 +98,6 @@ public class MainActivity extends ActionBarActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
     }
 
-    /*
-     * @return List<Expense>
-     *     Return List of expenses orderBy date
-     */
-    public static List<Expense> getExpenses(){
-        List<Expense> toRet = new ArrayList<>();
-
-        toRet = Select.from(Expense.class)
-                .orderBy("year DESC, month DESC, day DESC, id DESC")
-                .list();
-
-        return toRet;
-    }
-
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -134,41 +122,5 @@ public class MainActivity extends ActionBarActivity {
         }
 
         return super.onOptionsItemSelected(item);
-    }
-
-    public Map<String,Float> getTotalAmounts() {
-        HashMap<String, Float> totalAmounts = new HashMap<>();
-
-        totalAmounts.put("today", (float) 0);
-        totalAmounts.put("month", (float) 0);
-        totalAmounts.put("year", (float) 0);
-
-        float total;
-        float amount;
-
-        for (Expense e: expenses)
-        {
-            amount = e.getAmount();
-
-            if ( e.isFromToday() ) {
-                total = totalAmounts.get("today");
-                total += amount;
-                totalAmounts.put("today", total );
-            }
-
-            if ( e.isCurrentlyMonth() ) {
-                total = totalAmounts.get("month");
-                total += amount;
-                totalAmounts.put("month", total );
-            }
-
-            if ( e.isCurrentlyYear() ) {
-                total = totalAmounts.get("year");
-                total += amount;
-                totalAmounts.put("year", total );
-            }
-        }
-
-        return totalAmounts;
     }
 }

@@ -3,20 +3,24 @@ package com.brunocascio.expensis;
 import com.brunocascio.expensis.Exceptions.InvalidFieldsException;
 import com.orm.SugarRecord;
 import com.orm.dsl.Ignore;
-import com.orm.query.Condition;
 import com.orm.query.Select;
 
 import java.text.DateFormatSymbols;
 import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 /**
  * Created by d3m0n on 02/02/15.
  */
 public class Expense extends SugarRecord<Expense> {
+
+    // Table columns
     private String description;
     private float amount;
     private int month;
@@ -26,14 +30,78 @@ public class Expense extends SugarRecord<Expense> {
     @Ignore
     private static List<Expense> recentlyExpenses;
 
+    @Ignore
+    private static List<Expense> expenses;
+
+    /*
+     *  Default Constructor
+     */
     public Expense(){}
 
+    /*
+     *  Constructor
+     */
     public Expense(String description, float amount, int day, int month, int year){
         this.description = description;
         this.amount = amount;
         this.day = day;
         this.month = month;
         this.year = year;
+    }
+
+    /*
+     * @return List<Expense>
+     *     Return List of expenses orderBy date
+     */
+    public static List<Expense> getExpenses(){
+        expenses = new ArrayList<>();
+
+        expenses = Select.from(Expense.class)
+                .orderBy("year DESC, month DESC, day DESC, id DESC")
+                .list();
+
+        return expenses;
+    }
+
+    /*
+     * @return Map<String, Float>
+     *     Return Map with amounts for today, currently month, and currently year
+     */
+    public static Map<String,Float> getTotalAmounts() {
+
+        HashMap<String, Float> totalAmounts = new HashMap<>();
+
+        totalAmounts.put("today", (float) 0);
+        totalAmounts.put("month", (float) 0);
+        totalAmounts.put("year", (float) 0);
+
+        float total;
+        float amount;
+
+        for (Expense e: expenses)
+        {
+            amount = e.getAmount();
+
+            if ( e.isFromToday() ) {
+                total = totalAmounts.get("today");
+                total += amount;
+                totalAmounts.put("today", total );
+            }
+
+            if ( e.isCurrentlyMonth() ) {
+                total = totalAmounts.get("month");
+                total += amount;
+                totalAmounts.put("month", total );
+            }
+
+            if ( e.isCurrentlyYear() ) {
+                total = totalAmounts.get("year");
+                total += amount;
+                totalAmounts.put("year", total );
+            }
+        }
+
+        return totalAmounts;
     }
 
     /*
@@ -79,9 +147,16 @@ public class Expense extends SugarRecord<Expense> {
         return sdf.parse(s, new ParsePosition(0)) != null;
     }
 
+    /*
+     * @return List<Expense>
+     *     retrieve recently added expenses (limit 10)
+     */
     public static List<Expense> getRecentlyAddedExpenses() {
 
-        return Select.from(Expense.class).orderBy("id DESC").limit("10").list();
+        return Select.from(Expense.class)
+                .orderBy("id DESC")
+                .limit("10")
+                .list();
     }
 
     /*
@@ -123,7 +198,34 @@ public class Expense extends SugarRecord<Expense> {
         return (this.year == year);
     }
 
-                                /* Setters and getters */
+    /*
+     * @return String
+     *  return formatted full date
+     */
+    public String getFullDate() {
+        return this.day + "-" + this.month + "-" + this.year;
+    }
+
+    /*
+     * @return String
+     *  return formatted full date without year
+     */
+    public String getFullDateWithOutYear(){
+        // Get month names
+        final String[] months = DateFormatSymbols.getInstance(Locale.getDefault()).getMonths();
+
+        return this.day + " " + months[this.month-1];
+    }
+
+    @Override
+    public String toString() {
+        return this.description + " | " + this.amount + " | " + this.getFullDate();
+    }
+
+
+    /*
+       * Setters and getters
+    */
 
     public int getAmount() {
         return Math.round(this.amount);
@@ -163,21 +265,5 @@ public class Expense extends SugarRecord<Expense> {
 
     public void setDescription(String description) {
         this.description = description;
-    }
-
-    public String getFullDate() {
-        return this.day + "-" + this.month + "-" + this.year;
-    }
-
-    public String getFullDateWithOutYear(){
-        // Get month names
-        final String[] months = DateFormatSymbols.getInstance(Locale.getDefault()).getMonths();
-
-        return this.day + " " + months[this.month-1];
-    }
-
-    @Override
-    public String toString() {
-        return this.description + " | " + this.amount + " | " + this.getFullDate();
     }
 }

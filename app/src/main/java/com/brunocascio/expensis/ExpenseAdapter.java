@@ -26,7 +26,6 @@ public class ExpenseAdapter extends RecyclerView.Adapter<ExpenseAdapter.ExpenseV
         this.context=context;
         this.layoutInflater=LayoutInflater.from(context);
         this.data = data;
-
     }
 
     @Override
