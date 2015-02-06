@@ -6,31 +6,19 @@ import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.text.Spannable;
-import android.text.SpannableString;
-import android.text.TextUtils;
-import android.text.style.RelativeSizeSpan;
-import android.text.style.TextAppearanceSpan;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
+import com.brunocascio.expensis.Activities.NewExpenseActivity;
+import com.brunocascio.expensis.Adapters.ExpenseAdapter;
+import com.brunocascio.expensis.Models.Expense;
 import com.melnykov.fab.FloatingActionButton;
-import com.orm.query.Condition;
-import com.orm.query.Select;
 
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Currency;
-import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
-
-import static com.orm.SugarApp.getSugarContext;
 
 
 public class MainActivity extends ActionBarActivity {
@@ -48,6 +36,8 @@ public class MainActivity extends ActionBarActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
+        Log.d("lifecycle","create");
+
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_main);
@@ -61,21 +51,19 @@ public class MainActivity extends ActionBarActivity {
         // get expenses
         expenses = Expense.getExpenses();
 
-        // get total amounts
-        mTotal = Expense.getTotalAmounts();
-
-        // Statistics
-        // TODO: correct currencyCode
-        String currencyCode = "$";
-
         totalToday = (TextView) findViewById(R.id.totalToday);
-        totalToday.setText( currencyCode +" "+ mTotal.get("today") );
-
         totalMonth = (TextView) findViewById(R.id.totalMonth);
-        totalMonth.setText( currencyCode +" "+ mTotal.get("month") );
-
         totalYear = (TextView) findViewById(R.id.totalYear);
-        totalYear.setText( currencyCode +" "+ mTotal.get("year") );
+
+        recyclerView = (RecyclerView) findViewById(R.id.expensesList);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+
+        expenseAdapter = new ExpenseAdapter(getApplicationContext(), expenses);
+        recyclerView.setAdapter(expenseAdapter);
+
+        // SET amounts
+        updateHeader();
 
         // Button new expense
         btnNew = (FloatingActionButton) findViewById(R.id.fab);
@@ -85,17 +73,19 @@ public class MainActivity extends ActionBarActivity {
                 startActivity(new Intent(getApplicationContext(), NewExpenseActivity.class));
             }
         });
+    }
 
-        // RecyclerView (Expenses List)
-        expenseAdapter = new ExpenseAdapter(getApplicationContext(), expenses);
+    private void updateHeader() {
+        // get total amounts
+        mTotal = Expense.getTotalAmounts();
 
-        recyclerView = (RecyclerView) findViewById(R.id.expensesList);
+        // Statistics
+        // TODO: correct currencyCode
+        String currencyCode = "$";
 
-        recyclerView.setHasFixedSize(true);
-
-        recyclerView.setAdapter(expenseAdapter);
-
-        recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+        totalToday.setText( currencyCode +" "+ mTotal.get("today") );
+        totalMonth.setText( currencyCode +" "+ mTotal.get("month") );
+        totalYear.setText( currencyCode +" "+ mTotal.get("year") );
     }
 
     @Override
