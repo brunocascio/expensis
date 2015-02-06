@@ -6,27 +6,18 @@ import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.text.Spannable;
-import android.text.SpannableString;
-import android.text.TextUtils;
-import android.text.style.RelativeSizeSpan;
-import android.text.style.TextAppearanceSpan;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
+import com.brunocascio.expensis.Activities.NewExpenseActivity;
+import com.brunocascio.expensis.Adapters.ExpenseAdapter;
+import com.brunocascio.expensis.Models.Expense;
 import com.melnykov.fab.FloatingActionButton;
-import com.orm.query.Condition;
-import com.orm.query.Select;
 
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Currency;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 
 
@@ -45,6 +36,8 @@ public class MainActivity extends ActionBarActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
+        Log.d("lifecycle","create");
+
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_main);
@@ -56,23 +49,21 @@ public class MainActivity extends ActionBarActivity {
         getSupportActionBar().setTitle(R.string.app_name);
 
         // get expenses
-        expenses = getExpenses();
-
-        // get total amounts
-        mTotal = getTotalAmounts();
-
-        // Statistics
-        // TODO: correct currencyCode
-        String currencyCode = "$";
+        expenses = Expense.getExpenses();
 
         totalToday = (TextView) findViewById(R.id.totalToday);
-        totalToday.setText( currencyCode +" "+ mTotal.get("today") );
-
         totalMonth = (TextView) findViewById(R.id.totalMonth);
-        totalMonth.setText( currencyCode +" "+ mTotal.get("month") );
-
         totalYear = (TextView) findViewById(R.id.totalYear);
-        totalYear.setText( currencyCode +" "+ mTotal.get("year") );
+
+        recyclerView = (RecyclerView) findViewById(R.id.expensesList);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+
+        expenseAdapter = new ExpenseAdapter(getApplicationContext(), expenses);
+        recyclerView.setAdapter(expenseAdapter);
+
+        // SET amounts
+        updateHeader();
 
         // Button new expense
         btnNew = (FloatingActionButton) findViewById(R.id.fab);
@@ -82,33 +73,20 @@ public class MainActivity extends ActionBarActivity {
                 startActivity(new Intent(getApplicationContext(), NewExpenseActivity.class));
             }
         });
-
-        // RecyclerView (Expenses List)
-        expenseAdapter = new ExpenseAdapter(getApplicationContext(), expenses);
-
-        recyclerView = (RecyclerView) findViewById(R.id.expensesList);
-
-        recyclerView.setHasFixedSize(true);
-
-        recyclerView.setAdapter(expenseAdapter);
-
-        recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
     }
 
-    /*
-     * @return List<Expense>
-     *     Return List of expenses orderBy date
-     */
-    public static List<Expense> getExpenses(){
-        List<Expense> toRet = new ArrayList<>();
+    private void updateHeader() {
+        // get total amounts
+        mTotal = Expense.getTotalAmounts();
 
-        toRet = Select.from(Expense.class)
-                .orderBy("year DESC, month DESC, day DESC, id DESC")
-                .list();
+        // Statistics
+        // TODO: correct currencyCode
+        String currencyCode = "$";
 
-        return toRet;
+        totalToday.setText( currencyCode +" "+ mTotal.get("today") );
+        totalMonth.setText( currencyCode +" "+ mTotal.get("month") );
+        totalYear.setText( currencyCode +" "+ mTotal.get("year") );
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -134,41 +112,5 @@ public class MainActivity extends ActionBarActivity {
         }
 
         return super.onOptionsItemSelected(item);
-    }
-
-    public Map<String,Float> getTotalAmounts() {
-        HashMap<String, Float> totalAmounts = new HashMap<>();
-
-        totalAmounts.put("today", (float) 0);
-        totalAmounts.put("month", (float) 0);
-        totalAmounts.put("year", (float) 0);
-
-        float total;
-        float amount;
-
-        for (Expense e: expenses)
-        {
-            amount = e.getAmount();
-
-            if ( e.isFromToday() ) {
-                total = totalAmounts.get("today");
-                total += amount;
-                totalAmounts.put("today", total );
-            }
-
-            if ( e.isCurrentlyMonth() ) {
-                total = totalAmounts.get("month");
-                total += amount;
-                totalAmounts.put("month", total );
-            }
-
-            if ( e.isCurrentlyYear() ) {
-                total = totalAmounts.get("year");
-                total += amount;
-                totalAmounts.put("year", total );
-            }
-        }
-
-        return totalAmounts;
     }
 }

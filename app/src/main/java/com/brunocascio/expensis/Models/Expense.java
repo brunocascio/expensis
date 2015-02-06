@@ -1,4 +1,4 @@
-package com.brunocascio.expensis;
+package com.brunocascio.expensis.Models;
 
 import com.brunocascio.expensis.Exceptions.InvalidFieldsException;
 import com.orm.SugarRecord;
