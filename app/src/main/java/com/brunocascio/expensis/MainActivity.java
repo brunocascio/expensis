@@ -53,6 +53,7 @@ public class MainActivity extends ActionBarActivity {
         toolbar = (Toolbar) findViewById(R.id.app_bar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setTitle(R.string.app_name);
 
         // get expenses
         expenses = getExpenses();
@@ -61,7 +62,6 @@ public class MainActivity extends ActionBarActivity {
         mTotal = getTotalAmounts();
 
         // Statistics
-
         // TODO: correct currencyCode
         String currencyCode = "$";
 

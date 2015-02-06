@@ -116,7 +116,6 @@
                         android:layout_margin="16dp"
                         fab:fab_colorNormal="@color/orange"
                         fab:fab_colorPressed="@color/white"
-                        fab:fab_type="mini"
                         fab:fab_colorRipple="@color/ripple_material_light"
                         android:src="@drawable/ic_action_new" />
             </FrameLayout>

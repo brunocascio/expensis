@@ -2,6 +2,7 @@ package com.brunocascio.expensis;
 
 import com.brunocascio.expensis.Exceptions.InvalidFieldsException;
 import com.orm.SugarRecord;
+import com.orm.dsl.Ignore;
 import com.orm.query.Condition;
 import com.orm.query.Select;
 
@@ -21,6 +22,8 @@ public class Expense extends SugarRecord<Expense> {
     private int month;
     private int day;
     private int year;
+
+    @Ignore
     private static List<Expense> recentlyExpenses;
 
     public Expense(){}

@@ -40,6 +40,7 @@
                 android:textColor="@color/grey"
                 android:textColorHint="@color/grey_light"
                 android:hint="@string/description"
+                android:singleLine="true"
                 android:maxLength="50"/>
 
             <EditText

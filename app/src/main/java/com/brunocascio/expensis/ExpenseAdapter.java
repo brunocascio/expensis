@@ -47,7 +47,7 @@ public class ExpenseAdapter extends RecyclerView.Adapter<ExpenseAdapter.ExpenseV
         viewHolder.date.setText(e.getFullDateWithOutYear());
 
         // Here you apply the animation when the view is bound
-        setAnimation(viewHolder.container);
+        //setAnimation(viewHolder.container);
     }
 
     private void setAnimation(View viewToAnimate)
