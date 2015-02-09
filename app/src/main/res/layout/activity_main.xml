@@ -23,7 +23,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         card_view:cardCornerRadius="0dp"
-        card_view:cardBackgroundColor="@color/white">
+        card_view:cardBackgroundColor="@color/white"
+        android:layout_marginLeft="@dimen/paddingDefault"
+        android:layout_marginRight="@dimen/paddingDefault">
             <GridLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -32,17 +34,17 @@
                     <TextView
                         android:layout_height="wrap_content"
                         android:layout_width="100dp"
-                        android:background="@color/grey_light"
+                        android:background="@color/orange100"
                         android:textColor="@color/white"
                         android:textSize="18dp"
                         android:gravity="center"
                         android:padding="@dimen/paddingDefault"
                         android:id="@+id/totalTodayText"
-                        android:text="Hoy" />
+                        android:text="@string/today" />
                     <TextView
                         android:layout_height="wrap_content"
                         android:layout_width="fill_parent"
-                        android:textColor="@color/orange400"
+                        android:textColor="@color/grey_light"
                         android:background="@color/white"
                         android:textSize="18dp"
                         android:gravity="center"
@@ -52,24 +54,24 @@
                     <TextView
                         android:layout_height="wrap_content"
                         android:layout_width="100dp"
-                        android:background="@color/grey_light"
+                        android:background="@color/orange100"
                         android:textColor="@color/white"
                         android:textSize="18dp"
                         android:gravity="center"
                         android:padding="@dimen/paddingDefault"
                         android:id="@+id/totalMonthText"
-                        android:text="Mes"/>
+                        android:text="@string/month"/>
                     <TextView
                         android:layout_height="wrap_content"
                         android:layout_width="fill_parent"
                         android:id="@+id/totalMonth"
-                        android:textColor="@color/orange400"
+                        android:textColor="@color/grey_light"
                         android:background="@color/white"
                        android:textSize="18dp"
                         android:gravity="center"
                         android:padding="@dimen/paddingDefault"/>
 
-                    <TextView
+                    <!--<TextView
                         android:layout_height="wrap_content"
                         android:layout_width="100dp"
                         android:background="@color/grey_light"
@@ -87,7 +89,7 @@
                         android:background="@color/white"
                         android:textSize="18dp"
                         android:gravity="center"
-                        android:padding="@dimen/paddingDefault" />
+                        android:padding="@dimen/paddingDefault" />-->
             </GridLayout>
      </android.support.v7.widget.CardView>
 

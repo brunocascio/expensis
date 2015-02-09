@@ -29,6 +29,11 @@ public class ExpenseAdapter extends RecyclerView.Adapter<ExpenseAdapter.ExpenseV
         this.data = data;
     }
 
+    public void removeExpense(int pos) {
+        data.remove(pos);
+        this.notifyItemRemoved(pos);
+    }
+
     @Override
     public ExpenseViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
 
@@ -42,24 +47,29 @@ public class ExpenseAdapter extends RecyclerView.Adapter<ExpenseAdapter.ExpenseV
     @Override
     public void onBindViewHolder(ExpenseViewHolder viewHolder, int i) {
         Expense e = data.get(i);
+        viewHolder.setItem(e);
         viewHolder.description.setText(e.getDescription());
         viewHolder.amount.setText("$"+e.getAmount()+"");
         viewHolder.date.setText(e.getFullDateWithOutYear());
 
         // Here you apply the animation when the view is bound
-        //setAnimation(viewHolder.container);
+        setAnimation(viewHolder.container, android.R.anim.slide_in_left);
     }
 
-    private void setAnimation(View viewToAnimate){
+    private void setAnimation(LinearLayout viewToAnimate, int animationType){
         // If the bound view wasn't previously displayed on screen, it's animated
         viewToAnimate.startAnimation(
-                AnimationUtils.loadAnimation(context, android.R.anim.slide_in_left)
+                AnimationUtils.loadAnimation(context, animationType)
         );
     }
 
     @Override
     public int getItemCount() {
         return (null != data ? data.size() : 0);
+    }
+
+    public Expense getExpense(int position) {
+        return this.data.get(position);
     }
 
 
@@ -70,6 +80,7 @@ public class ExpenseAdapter extends RecyclerView.Adapter<ExpenseAdapter.ExpenseV
         private TextView date;
         private LinearLayout container;
         private Context context;
+        private Expense e;
 
         public ExpenseViewHolder(View itemView, Context context) {
             super(itemView);
@@ -79,6 +90,14 @@ public class ExpenseAdapter extends RecyclerView.Adapter<ExpenseAdapter.ExpenseV
             this.description = (TextView) itemView.findViewById(R.id.rowDescription);
             this.amount = (TextView) itemView.findViewById(R.id.rowAmount);
             this.date = (TextView) itemView.findViewById(R.id.rowDate);
+        }
+
+        public void setItem(Expense e) {
+            this.e = e;
+        }
+
+        public Expense getItem() {
+            return this.e;
         }
     }
 }

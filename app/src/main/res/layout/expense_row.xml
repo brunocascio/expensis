@@ -18,22 +18,19 @@
                 android:orientation="horizontal"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:paddingLeft="@dimen/paddingDefault"
-                android:paddingRight="@dimen/paddingDefault">
+                android:gravity="center">
 
                 <LinearLayout
                     android:layout_marginRight="@dimen/paddingDefault"
                     android:orientation="vertical"
                     android:layout_width="100dp"
-                    android:background="@color/orange100"
+                    android:background="@color/grey_light"
                     android:layout_height="match_parent"
-                    android:padding="@dimen/paddingDefault"
-                    android:layout_gravity="center"
-                    android:gravity="center_vertical|center_horizontal">
+                    android:gravity="center_vertical">
 
                     <TextView
                         android:id="@+id/rowAmount"
-                        android:gravity="center_vertical|center_horizontal"
+                        android:gravity="center"
                         android:textAlignment="center"
                         android:layout_height="wrap_content"
                         android:textSize="18dp"

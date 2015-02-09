@@ -3,6 +3,7 @@ package com.brunocascio.expensis.Models;
 import com.brunocascio.expensis.Exceptions.InvalidFieldsException;
 import com.orm.SugarRecord;
 import com.orm.dsl.Ignore;
+import com.orm.query.Condition;
 import com.orm.query.Select;
 
 import java.text.DateFormatSymbols;
@@ -56,7 +57,11 @@ public class Expense extends SugarRecord<Expense> {
     public static List<Expense> getExpenses(){
         expenses = new ArrayList<>();
 
+        Calendar c = Calendar.getInstance();
+        int month = (c.get(Calendar.MONTH)+1);
+
         expenses = Select.from(Expense.class)
+                .where(Condition.prop("month").eq(month))
                 .orderBy("year DESC, month DESC, day DESC, id DESC")
                 .list();
 

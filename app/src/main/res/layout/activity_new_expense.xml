@@ -65,9 +65,17 @@
         </LinearLayout>
     </android.support.v7.widget.CardView>
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/lastAgree"
+        android:textColor="@color/grey_light"
+        android:layout_margin="@dimen/space16"/>
+
     <android.support.v7.widget.RecyclerView
         android:id="@+id/expensesRecentlyList"
-        android:layout_margin="@dimen/activity_horizontal_margin"
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        android:layout_marginRight="@dimen/activity_horizontal_margin"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
     </android.support.v7.widget.RecyclerView>

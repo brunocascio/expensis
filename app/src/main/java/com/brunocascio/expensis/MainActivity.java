@@ -1,15 +1,20 @@
 package com.brunocascio.expensis;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.support.v7.internal.widget.AdapterViewCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.GestureDetector;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.TextView;
 
 import com.brunocascio.expensis.Activities.NewExpenseActivity;
@@ -19,6 +24,8 @@ import com.melnykov.fab.FloatingActionButton;
 
 import java.util.List;
 import java.util.Map;
+
+import me.drakeet.materialdialog.MaterialDialog;
 
 
 public class MainActivity extends ActionBarActivity {
@@ -32,6 +39,7 @@ public class MainActivity extends ActionBarActivity {
     private TextView totalYear;
     private List<Expense> expenses;
     private Map<String, Float> mTotal;
+    private MaterialDialog mMaterialDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,7 +61,7 @@ public class MainActivity extends ActionBarActivity {
 
         totalToday = (TextView) findViewById(R.id.totalToday);
         totalMonth = (TextView) findViewById(R.id.totalMonth);
-        totalYear = (TextView) findViewById(R.id.totalYear);
+        //totalYear = (TextView) findViewById(R.id.totalYear);
 
         recyclerView = (RecyclerView) findViewById(R.id.expensesList);
         recyclerView.setHasFixedSize(true);
@@ -61,6 +69,49 @@ public class MainActivity extends ActionBarActivity {
 
         expenseAdapter = new ExpenseAdapter(getApplicationContext(), expenses);
         recyclerView.setAdapter(expenseAdapter);
+
+        mMaterialDialog = new MaterialDialog(this);
+
+        recyclerView.addOnItemTouchListener(
+            new RecyclerItemClickListener(this,
+                    new RecyclerItemClickListener.OnItemClickListener() {
+                        @Override
+                        public void onItemClick(View view, int position) {
+                            final int pos = position;
+                            Expense e = expenseAdapter.getExpense(pos);
+                            Expense.deleteAll(Expense.class, " id = ? ", e.getId() + "");
+                            expenseAdapter.removeExpense(pos);
+                            updateHeader();
+
+                            /*mMaterialDialog.setMessage("Desea borrar este gasto?");
+
+                            mMaterialDialog.setPositiveButton("OK", new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    try {
+                                        Expense e = expenseAdapter.getExpense(pos);
+                                        Expense.deleteAll(Expense.class, " id = ? ", e.getId() + "");
+                                        expenseAdapter.removeExpense(pos);
+                                        updateHeader();
+                                    } catch ( IndexOutOfBoundsException e) {
+                                        Log.e("indexOfBound", "Invalid position");
+                                    }
+                                    mMaterialDialog.dismiss();
+                                }
+                            });
+
+                            mMaterialDialog.setNegativeButton("CANCEL", new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    mMaterialDialog.dismiss();
+                                }
+                            });
+
+                            mMaterialDialog.show();*/
+                        }
+                    }
+            )
+        );
 
         // SET amounts
         updateHeader();
@@ -85,7 +136,7 @@ public class MainActivity extends ActionBarActivity {
 
         totalToday.setText( currencyCode +" "+ mTotal.get("today") );
         totalMonth.setText( currencyCode +" "+ mTotal.get("month") );
-        totalYear.setText( currencyCode +" "+ mTotal.get("year") );
+        //totalYear.setText( currencyCode +" "+ mTotal.get("year") );
     }
 
     @Override
@@ -112,5 +163,48 @@ public class MainActivity extends ActionBarActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+
+
+    static class RecyclerItemClickListener implements RecyclerView.OnItemTouchListener {
+
+        private final GestureDetector mGestureDetector;
+        private OnItemClickListener mListener;
+
+        public interface OnItemClickListener {
+            public void onItemClick(View view, int position);
+        }
+
+        public RecyclerItemClickListener(Activity activity, OnItemClickListener listener) {
+            mListener = listener;
+
+            mGestureDetector = new GestureDetector(activity.getApplicationContext(),
+                    new GestureDetector.SimpleOnGestureListener() {
+                        @Override public boolean onSingleTapUp(MotionEvent e) {
+                            return true;
+                    }
+                }
+            );
+        }
+
+        @Override
+        public boolean onInterceptTouchEvent(RecyclerView recyclerView, MotionEvent motionEvent) {
+            View childView = recyclerView.findChildViewUnder(motionEvent.getX(), motionEvent.getY());
+
+            if (childView != null &&
+                    mListener != null &&
+                        mGestureDetector.onTouchEvent(motionEvent)) {
+
+                mListener.onItemClick(childView, recyclerView.getChildPosition(childView));
+                return true;
+            }
+            return false;
+        }
+
+        @Override
+        public void onTouchEvent(RecyclerView recyclerView, MotionEvent motionEvent) {
+
+        }
     }
 }
